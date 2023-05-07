@@ -12,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.example.java_demo_book.Service.ifs.BookService;
 import com.example.java_demo_book.entity.Book;
+import com.example.java_demo_book.errors.BookMessage;
 import com.example.java_demo_book.repository.BookDao;
 import com.example.java_demo_book.vo.BookResponse;
 import com.example.java_demo_book.vo.BookSalesResponse;
@@ -46,7 +47,8 @@ public class BookTest {
 		Book book4 = new Book("687-5-129375-49-0", "EEE", "E01", 120, 20, 110, "literary");
 		Book book5 = new Book("234-1-938528-13-0", "FFF", "F01", 140, 10, 150, "literary");
 		Book book6 = new Book("423-7-394820-63-0", "III", "I01", 140, 20, 130, "programing");
-		// failed data
+		
+		//　Error data
 		Book bookF = new Book("", "AFF", "A03", 140, 10, 150, "novel");
 		Book bookF1 = new Book(null, "AFF", "A03", 140, 10, 150, "novel");
 
@@ -67,7 +69,7 @@ public class BookTest {
 
 		if(CollectionUtils.isEmpty(resBook)) {
 			
-			System.out.println("Test Error!");
+			System.out.println(BookMessage.ERROR_BOOK_DATA.getMessage());
 
 		}
 		

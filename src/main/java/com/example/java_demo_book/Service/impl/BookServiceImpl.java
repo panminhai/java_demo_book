@@ -55,7 +55,7 @@ public class BookServiceImpl implements BookService {
 					|| !StringUtils.hasText(check.getAuthor()) || !StringUtils.hasText(check.getCategory())
 					|| check.getPrice() < 0 || check.getStock() < 0 || check.getSales() < 0) {
 
-				return new BookResponse(BookMessage.DATA_ERROR.getMessage());
+				return new BookResponse(BookMessage.ERROR_BOOK_DATA.getMessage());
 				}
 
 			{
@@ -86,6 +86,7 @@ public class BookServiceImpl implements BookService {
 			return new BookResponse(BookMessage.INSERT_ERROR.getMessage());
 
 		}
+		
 		// 空值list: 用來裝booklist
 		List<BookTypeResponse> resTypeList = new ArrayList<>();
 

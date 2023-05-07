@@ -9,6 +9,7 @@ public enum BookMessage {
 		STRING_ERROR("401", "STRING_ERROR: Don't have any word!"),
 		INSERT_ERROR("402", "INSERT_ERROR: Can't find the book!"),
 		DATA_ERROR("400", "Account or password is error!!"),
+		ERROR_BOOK_DATA("403_1", "Input the complete data!"),
 		BOOK_SALES_ERROR("405", "Book Data is error!!"),
 		NOT_UPDATEDATA("403", "Input the complete update data!"), 
 		NOT_FOUND("404", "Not found!!");

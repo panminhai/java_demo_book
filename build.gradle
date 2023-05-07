@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '2.7.11'
+	id 'org.springframework.boot' version '2.7.10'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -11,9 +11,18 @@ sourceCompatibility = '11'
 repositories {
 	mavenCentral()
 }
-
+// àÀ˚Æíçì¸
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
+	// êV˙ù(ò“åπ:MVN Properity)
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	
+	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32'
+	
+	
+	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 

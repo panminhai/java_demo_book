@@ -21,7 +21,11 @@ dependencies {
 	
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.32'
 	
+	// Swagger 3.0 ›ß”í®‡“ springfox-boot-starter (book‘ªŸ“¬Œ÷)
+	// implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	
+	// opin api
+	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
 	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

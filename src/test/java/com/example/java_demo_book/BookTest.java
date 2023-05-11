@@ -69,7 +69,7 @@ public class BookTest {
 
 		if(CollectionUtils.isEmpty(resBook)) {
 			
-			System.out.println(BookMessage.ERROR_BOOK_DATA.getMessage());
+			System.out.println(BookMessage.TEST_ERROR.getMessage());
 
 		}
 		

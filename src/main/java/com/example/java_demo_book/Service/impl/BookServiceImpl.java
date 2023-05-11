@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -28,7 +30,12 @@ import com.example.java_demo_book.vo.UpdateBookResponse;
 
 @Service
 public class BookServiceImpl implements BookService {
-
+	
+	
+	private Logger logger = LoggerFactory.getLogger(getClass()); // import: slf4j 
+																//ex: logger.info()
+	
+	
 	// 使用Dao和數據庫做接觸
 	@Autowired
 	private BookDao bookDao;
@@ -112,12 +119,19 @@ public class BookServiceImpl implements BookService {
 	 */
 	@Override
 	public BookResponse buyerSearch(String name, String isbn, String author) {
+
+//		int isConsumer;
+//		if(boolean isConsumer == 0) {
+//			
+//		}
+		
 		/*
 		 * 全部資料取出
 		 */
 
 		List<Book> allBookInfo = bookDao.findAll();
-
+		
+		// 裝查詢結果書單
 		List<BuyBookResponse> buyerList = new ArrayList<>();
 
 		// 全部資訊沒輸入的情況(要更改)
@@ -342,7 +356,7 @@ public class BookServiceImpl implements BookService {
 			return new BookResponse(BookMessage.DATALIST_ERROR.getMessage());
 		}
 		
-		
+		// 設置更新書籍的Response(setUpdateBookResponse)去接收
 		bookResponse.setUpdateBookResponse("更新後書庫情報成功!", updateBookResponse);
 
 		return bookResponse;
@@ -599,7 +613,7 @@ public class BookServiceImpl implements BookService {
 //		}
 	}
 
-	// mtehod7: 書籍排名
+	// method7: 書籍排名
 	@Override
 	public BookResponse bookRanking() {
 				
@@ -627,6 +641,14 @@ public class BookServiceImpl implements BookService {
 		
 		
 		return bookResponse;
+	}
+
+	//method3-1: 買賣家搜尋 
+	@Override
+	public BookResponse buySellSearch(String name, String isbn, String author, boolean isBuyer) {
+
+		
+		return null;
 	}
 
 }

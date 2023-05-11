@@ -18,7 +18,10 @@ public interface BookService {
 	public BookResponse buyerSearch(String name, String isbn, String author);	
 	
 	// method: æÌ‰Ærq
-	public BookResponse sellerSearch(String name, String isbn, String author);	
+	public BookResponse sellerSearch(String name, String isbn, String author);
+	
+	
+	public BookResponse buySellSearch(String name, String isbn, String author, boolean isBuyer);
 
 	// method: XV‘Ğ‘—¿(ŒÉ‘¶)
 	public BookResponse updateBookInfo(String isbn, int stock);

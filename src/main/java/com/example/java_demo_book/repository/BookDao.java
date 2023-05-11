@@ -21,8 +21,13 @@ public interface BookDao extends JpaRepository<Book, String>{
 	// 安裝JPA文法(在資料庫裡對照有對上前端"類別"的書籍)
 	public List<Book> findAllByCategory (String category) ;
 	
-	
 	public Book findByIsbn(String isbn); 
+	
+	public Book findByName(String name);
+	
+	public Book findByAuthor(String author);
+	
+	
 	
 	// 找出資料庫排行榜前5大銷售
 	public List<Book> findTop5ByOrderBySalesDesc();

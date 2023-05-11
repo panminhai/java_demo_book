@@ -134,7 +134,7 @@ public class BookServiceImpl implements BookService {
 		// 裝查詢結果書單
 		List<BuyBookResponse> buyerList = new ArrayList<>();
 
-		// 全部資訊沒輸入的情況(要更改)
+		// 全部資訊沒輸入的情況(要更改: 輸入沒關係的變數也會跑出全部結果)
 		if (!StringUtils.hasText(name) && !StringUtils.hasText(isbn) && !StringUtils.hasText(author)) {
 			for (Book item : allBookInfo) {
 				BuyBookResponse buyerInfo = new BuyBookResponse(item.getName(), item.getIsbn(), item.getAuthor(),
@@ -647,8 +647,84 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public BookResponse buySellSearch(String name, String isbn, String author, boolean isBuyer) {
 
+		/*
+		 * 全部資料取出
+		 */
+		List<Book> allBookInfo = bookDao.findAll();
 		
-		return null;
+		// 裝查詢結果書單: 買家
+		List<BuyBookResponse> buyerList = new ArrayList<>();
+		
+		List<SellBookResponse> sellerList = new ArrayList<>();
+
+		BookResponse bookResponse = new BookResponse();
+
+		
+		// 在資料庫尋找相同書名的書
+		Book resName = bookDao.findByName(name);
+		
+		Book resIsbn = bookDao.findByIsbn(isbn);
+		
+		Book resAuthor = bookDao.findByAuthor(author);
+		
+		
+		if(!StringUtils.hasText(name) && !StringUtils.hasText(isbn) && !StringUtils.hasText(author)) {
+			
+			return new BookResponse(BookMessage.NOT_UPDATEDATA.getMessage());
+		}
+		
+		
+		/*
+		 * 買家處理
+		 */
+		for(Book item : allBookInfo) {
+		
+			if((!(resName== null) || !(resIsbn==null)) || !(resAuthor==null) && isBuyer == true) {
+				
+				BuyBookResponse buyerInfo = new BuyBookResponse(item.getName(), item.getIsbn(), item.getAuthor(),
+						item.getPrice());
+				buyerList.add(buyerInfo);
+				
+				// 負責回傳
+				return new BookResponse("successful!", buyerList);
+			}
+			
+			else {
+				return new BookResponse(BookMessage.INSERT_ERROR.getMessage());
+
+			}
+			
+		}	
+			
+		
+		/*
+		 * 賣家處理
+		 */
+		for(Book item : allBookInfo) {
+			
+			if((!(resName== null) || !(resIsbn==null)) || !(resAuthor==null) && isBuyer == false) {
+				
+				SellBookResponse sellerInfo = new SellBookResponse(item.getName(), item.getIsbn(), item.getAuthor(),
+						item.getPrice(), item.getSales(), item.getStock());
+
+				sellerList.add(sellerInfo);
+				
+				// 設置銷售員的Response(List<SellBookResponse>)去接收for迴圈的list(sellerList)
+				bookResponse.setＳellBookResponse(sellerList);
+				return bookResponse;
+
+			}
+			
+			else {
+				return new BookResponse(BookMessage.INSERT_ERROR.getMessage());
+
+			}
+			
+			
+		}
+		return bookResponse;
+		
+		
 	}
 
 }

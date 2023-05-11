@@ -37,5 +37,7 @@ public interface BookService {
 
 	// method: ‘Ğ”rsÔ
 	public BookResponse bookRanking();
+	
+
 
 }

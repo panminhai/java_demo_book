@@ -24,6 +24,8 @@ public class BookController {
 		return bookService.addBookInfo(request.getReqBookInfo());
 	}
 	
+	
+	
 	// PostMapping: 前端尋找輸入資料	, value: 貼在外端post連接用, RequestBody: 轉換成java語言格式方便後端程式使用
 	@PostMapping(value = "type_search_info") 
 	public BookResponse typeSearch(@RequestBody BookRequest request) { // "()"內容為外端的request對象的呼叫
@@ -31,12 +33,14 @@ public class BookController {
 		return bookService.typeSearch(request.getCategory());
 	}
 
+	
 	// PostMapping: 前端尋找輸入資料	, value: 貼在外端post連接用, RequestBody: 轉換成java語言格式方便後端程式使用
 	@PostMapping(value = "name_search_buyer") 
 	public BookResponse buyerSearch(@RequestBody BookRequest request) { // "()"內容為外端的request對象的呼叫
 		
 		return bookService.buyerSearch(request.getName(), request.getIsbn(), request.getAuthor());
 	}
+	
 	
 	@PostMapping(value = "name_search_seller") 
 	public BookResponse sellerSearch(@RequestBody BookRequest request) { // "()"內容為外端的request對象的呼叫
@@ -45,11 +49,21 @@ public class BookController {
 	}
 	
 	
+	
+	@PostMapping(value = "name_search_buySell") 
+	public BookResponse buySellSearch(@RequestBody BookRequest request) { // "()"內容為外端的request對象的呼叫
+		
+		return bookService.buySellSearch(request.getName(), request.getIsbn(), request.getAuthor(), request.isBuyer());
+	}
+	
+	
 	@PostMapping(value = "update_book_stock") 
 	public BookResponse updateBookResponse(@RequestBody BookRequest request) { // "()"內容為外端的request對象的呼叫
 		
 		return bookService.updateBookInfo(request.getIsbn(), request.getStock());
 	}
+	
+	
 	
 	@PostMapping(value = "update_book_price") 
 	public BookResponse updateBookResponse1(@RequestBody BookRequest request) { // "()"內容為外端的request對象的呼叫

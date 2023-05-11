@@ -20,7 +20,7 @@ public interface BookService {
 	// method: æÌ‰Ærq
 	public BookResponse sellerSearch(String name, String isbn, String author);
 	
-	
+	// method: ”ƒæÌ‰Ærq
 	public BookResponse buySellSearch(String name, String isbn, String author, boolean isBuyer);
 
 	// method: XV‘Ğ‘—¿(ŒÉ‘¶)

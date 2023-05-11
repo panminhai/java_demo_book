@@ -16,6 +16,7 @@ public class BookRequest {
 	private String name;
 	private String isbn; 
 	private String author;
+	private boolean isBuyer;
 	
 	// method "‘ĞXV"request: [isbn, stock][isbn, price][isbn, category]
 	private int stock;
@@ -44,6 +45,16 @@ public class BookRequest {
 		super();
 		this.buyList = buyList;
 		this.buyNum = buyNum;
+	}
+	
+
+	// method : ”ƒæÌ‰Ærq—p
+	public BookRequest(String name, String isbn, String author, boolean isBuyer) {
+		super();
+		this.name = name;
+		this.isbn = isbn;
+		this.author = author;
+		this.isBuyer = isBuyer;
 	}
 
 
@@ -157,6 +168,19 @@ public class BookRequest {
 		this.buyNum = buyNum;
 	}
 
+
+
+	public boolean isBuyer() {
+		return isBuyer;
+	}
+
+
+
+	public void setBuyer(boolean isBuyer) {
+		this.isBuyer = isBuyer;
+	}
+
+	
 
 	
 }

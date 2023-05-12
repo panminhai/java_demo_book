@@ -1,6 +1,7 @@
 package com.example.java_demo_book.Service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -335,7 +336,7 @@ public class BookServiceImpl implements BookService {
 		int res = bookDao.updateStockByIsbn(isbn, stock);
 
 		// 從更新後的資料庫中找書(用isbn)
-		Book updateBookInfo = bookDao.findByIsbn(isbn);
+		Book updateBookInfo = bookDao.findAllByIsbn(isbn);
 
 		// DataBase找到書:
 		if (res == 1) {
@@ -403,7 +404,7 @@ public class BookServiceImpl implements BookService {
 		int res = bookDao.updatePriceByIsbn(isbn, price);
 
 		// 從更新後的資料庫中找書
-		Book updateBookInfo = bookDao.findByIsbn(isbn);
+		Book updateBookInfo = bookDao.findAllByIsbn(isbn);
 		
 		// DataBase找到書:
 		if (res == 1) {
@@ -469,7 +470,7 @@ public class BookServiceImpl implements BookService {
 		int res = bookDao.updateCategoryByIsbn(isbn, category);
 
 		// 從更新後的資料庫中找書
-		Book updateBookInfo = bookDao.findByIsbn(isbn);
+		Book updateBookInfo = bookDao.findAllByIsbn(isbn);
 		
 		
 		// DataBase找到書:
@@ -526,7 +527,7 @@ public class BookServiceImpl implements BookService {
 		/*	購買書&書的數量共用同一個迴圈	*/
 		for(int i = 0; i < buyList.size(); i++) {
 			// 把list的每個isbn取出在資料庫尋找
-			Book storeBook = bookDao.findByIsbn(buyList.get(i));
+			Book storeBook = bookDao.findAllByIsbn(buyList.get(i));
 			
 			// 取出在資料庫的銷售量
 			int oldSales = storeBook.getSales();
@@ -650,81 +651,136 @@ public class BookServiceImpl implements BookService {
 		/*
 		 * 全部資料取出
 		 */
-		List<Book> allBookInfo = bookDao.findAll();
+//		List<Book> allBookInfo = bookDao.findAll();
 		
 		// 裝查詢結果書單: 買家
 		List<BuyBookResponse> buyerList = new ArrayList<>();
 		
+		
+		// 裝查詢結果書單: 賣家
 		List<SellBookResponse> sellerList = new ArrayList<>();
 
+		
 		BookResponse bookResponse = new BookResponse();
 
 		
-		// 在資料庫尋找相同書名的書
-		Book resName = bookDao.findByName(name);
 		
-		Book resIsbn = bookDao.findByIsbn(isbn);
-		
-		Book resAuthor = bookDao.findByAuthor(author);
-		
-		
-		if(!StringUtils.hasText(name) && !StringUtils.hasText(isbn) && !StringUtils.hasText(author)) {
+		if(!StringUtils.hasText(name) && !StringUtils.hasText(isbn) && 
+				!StringUtils.hasText(author) && isBuyer == false) {
 			
 			return new BookResponse(BookMessage.NOT_UPDATEDATA.getMessage());
 		}
 		
 		
+		// 在資料庫尋找相同書名的書
+		Book resName = bookDao.findAllByName(name);
+		
+		Book resIsbn = bookDao.findAllByIsbn(isbn);
+		
+		List<Book> resAuthor = bookDao.findAllByAuthor(author);
+				
+		
+		
 		/*
 		 * 買家處理
-		 */
-		for(Book item : allBookInfo) {
+		 */		
+		if(!(resName == null) && isBuyer == true) {
+			
+			BuyBookResponse buyerInfo = new BuyBookResponse(resName.getName(), resName.getIsbn(), resName.getAuthor(),
+					resName.getPrice());
+			buyerList.add(buyerInfo);
+			
+			// 負責回傳
+			return new BookResponse("successful!", buyerList);
 		
-			if((!(resName== null) || !(resIsbn==null)) || !(resAuthor==null) && isBuyer == true) {
+		}
+		
+		
+		
+		else if(!(resIsbn == null) && isBuyer == true) {
+		
+			BuyBookResponse buyerInfo = new BuyBookResponse(resIsbn.getName(), resIsbn.getIsbn(), resName.getAuthor(),
+					resIsbn.getPrice());
+			buyerList.add(buyerInfo);
+			
+			// 負責回傳
+			return new BookResponse("successful!", buyerList);
+		
+		}
+		
+		// 實驗: 當找到複數以上的資料書籍
+		else if(!(resAuthor==null) && isBuyer == true) {
+			
+			for(Book item : resAuthor) {
 				
 				BuyBookResponse buyerInfo = new BuyBookResponse(item.getName(), item.getIsbn(), item.getAuthor(),
 						item.getPrice());
 				buyerList.add(buyerInfo);
-				
-				// 負責回傳
-				return new BookResponse("successful!", buyerList);
+			
 			}
 			
-			else {
-				return new BookResponse(BookMessage.INSERT_ERROR.getMessage());
-
-			}
-			
-		}	
-			
+			// 負責回傳
+			return new BookResponse("successful!", buyerList);
+		}
+		
 		
 		/*
 		 * 賣家處理
 		 */
-		for(Book item : allBookInfo) {
 			
-			if((!(resName== null) || !(resIsbn==null)) || !(resAuthor==null) && isBuyer == false) {
-				
-				SellBookResponse sellerInfo = new SellBookResponse(item.getName(), item.getIsbn(), item.getAuthor(),
-						item.getPrice(), item.getSales(), item.getStock());
-
-				sellerList.add(sellerInfo);
-				
-				// 設置銷售員的Response(List<SellBookResponse>)去接收for迴圈的list(sellerList)
-				bookResponse.setＳellBookResponse(sellerList);
-				return bookResponse;
-
-			}
+		else if(!(resName== null) && isBuyer == false) {
 			
-			else {
-				return new BookResponse(BookMessage.INSERT_ERROR.getMessage());
+			SellBookResponse sellerInfo = new SellBookResponse(resName.getName(), resName.getIsbn(), resName.getAuthor(),
+					resName.getPrice(), resName.getSales(), resName.getStock());
 
-			}
+			sellerList.add(sellerInfo);
 			
+			// 設置銷售員的Response(List<SellBookResponse>)去接收for迴圈的list(sellerList)
+			bookResponse.setＳellBookResponse(sellerList);
+			return bookResponse;
+
+		}
+		
+		
+		
+		
+		else if(!(resIsbn==null) && isBuyer == false) {
+			
+			SellBookResponse sellerInfo = new SellBookResponse(resIsbn.getName(), resIsbn.getIsbn(), resIsbn.getAuthor(),
+					resIsbn.getPrice(), resIsbn.getSales(), resIsbn.getStock());
+
+			sellerList.add(sellerInfo);
+			
+			// 設置銷售員的Response(List<SellBookResponse>)去接收for迴圈的list(sellerList)
+			bookResponse.setＳellBookResponse(sellerList);
+			return bookResponse;
 			
 		}
-		return bookResponse;
 		
+		
+		// 實驗: 當找到複數以上的資料書籍
+		else if(!(resAuthor==null) && isBuyer == false) {
+			
+			for(Book item : resAuthor) {
+
+				SellBookResponse sellerInfo = new SellBookResponse(item.getName(), item.getIsbn(), item.getAuthor(),
+						item.getPrice(), item.getSales(), item.getStock());
+	
+				sellerList.add(sellerInfo);
+				
+			}
+			
+			// 設置銷售員的Response(List<SellBookResponse>)去接收for迴圈的list(sellerList)
+			bookResponse.setＳellBookResponse(sellerList);
+			return bookResponse;
+		}
+		
+		else {
+			return new BookResponse(BookMessage.INSERT_ERROR.getMessage());
+
+		}
+		
+//		return new BookResponse("Book Search Finish!!");
 		
 	}
-
 }

@@ -18,14 +18,20 @@ import com.example.java_demo_book.entity.Book;
 @Repository
 public interface BookDao extends JpaRepository<Book, String>{
 	
-	// 安裝JPA文法(在資料庫裡對照有對上前端"類別"的書籍)
+	/*
+	 *  安裝JPA文法(在資料庫裡對照有對上前端"類別"的書籍)
+	 */
 	public List<Book> findAllByCategory (String category) ;
+
 	
-	public Book findByIsbn(String isbn); 
+	//	public List<Book> findAllByIsbn(String isbn); 
+
+	public Book findAllByIsbn(String isbn); 
 	
-	public Book findByName(String name);
+	public Book findAllByName(String name);
 	
-	public Book findByAuthor(String author);
+	// 實驗: 當找到複數以上的資料書籍
+	public List<Book> findAllByAuthor(String author);
 	
 	
 	

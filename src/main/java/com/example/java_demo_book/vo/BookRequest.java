@@ -176,7 +176,7 @@ public class BookRequest {
 
 
 
-	public void setBuyer(boolean isBuyer) {
+	public void setIsBuyer(boolean isBuyer) {
 		this.isBuyer = isBuyer;
 	}
 

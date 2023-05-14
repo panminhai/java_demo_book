@@ -28,7 +28,9 @@ public interface BookDao extends JpaRepository<Book, String>{
 
 	public Book findAllByIsbn(String isbn); 
 	
-	public Book findAllByName(String name);
+	
+	// 實驗: 當找到複數以上的資料書籍
+	public List<Book> findAllByName(String name);
 	
 	// 實驗: 當找到複數以上的資料書籍
 	public List<Book> findAllByAuthor(String author);
@@ -64,7 +66,7 @@ public interface BookDao extends JpaRepository<Book, String>{
 	@Query(value = "update book b set b.stock = :newStock where b.ISBN = :newIsbn", nativeQuery = true)	
 	
 	public int updateStockByIsbn (
-								// test端的參數
+								// test/request端的參數
 			@Param("newIsbn") String inputIsbn, 
 			@Param("newStock") int inputStock);
 	
@@ -89,11 +91,6 @@ public interface BookDao extends JpaRepository<Book, String>{
 	public int updateCategoryByIsbn(
 			@Param("newIsbn") String inputIsbn, 
 			@Param("newCategory") String inputCategory); 
-
-
-
-
-
 
 }	
 

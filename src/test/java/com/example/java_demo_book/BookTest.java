@@ -10,9 +10,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
+import com.example.java_demo_book.Messages.BookMessage;
 import com.example.java_demo_book.Service.ifs.BookService;
 import com.example.java_demo_book.entity.Book;
-import com.example.java_demo_book.errors.BookMessage;
 import com.example.java_demo_book.repository.BookDao;
 import com.example.java_demo_book.vo.BookResponse;
 import com.example.java_demo_book.vo.BookSalesResponse;

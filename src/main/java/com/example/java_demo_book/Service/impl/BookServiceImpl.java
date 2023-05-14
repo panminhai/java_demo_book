@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.example.java_demo_book.Messages.BookMessage;
 import com.example.java_demo_book.Service.ifs.BookService;
 import com.example.java_demo_book.entity.Book;
-import com.example.java_demo_book.errors.BookMessage;
 import com.example.java_demo_book.repository.BookDao;
 import com.example.java_demo_book.vo.BookRankingResponse;
 import com.example.java_demo_book.vo.BookResponse;
@@ -673,7 +673,7 @@ public class BookServiceImpl implements BookService {
 		
 		
 		// 在資料庫尋找相同書名的書
-		Book resName = bookDao.findAllByName(name);
+		List<Book> resName = bookDao.findAllByName(name);
 		
 		Book resIsbn = bookDao.findAllByIsbn(isbn);
 		
@@ -683,23 +683,29 @@ public class BookServiceImpl implements BookService {
 		
 		/*
 		 * 買家處理
-		 */		
-		if(!(resName == null) && isBuyer == true) {
+		 */
+		
+		// List型態的空值無法被判定為"null", 判別式應改為isEmpty()
+		if(!(resName.isEmpty()) && isBuyer == true) {
 			
-			BuyBookResponse buyerInfo = new BuyBookResponse(resName.getName(), resName.getIsbn(), resName.getAuthor(),
-					resName.getPrice());
-			buyerList.add(buyerInfo);
+			for(Book item : resName) {
+		
+				BuyBookResponse buyerInfo = new BuyBookResponse(item.getName(), item.getIsbn(), item.getAuthor(),
+						item.getPrice());
+				buyerList.add(buyerInfo);
+				
+			}
+			
 			
 			// 負責回傳
 			return new BookResponse("successful!", buyerList);
-		
 		}
 		
 		
 		
 		else if(!(resIsbn == null) && isBuyer == true) {
 		
-			BuyBookResponse buyerInfo = new BuyBookResponse(resIsbn.getName(), resIsbn.getIsbn(), resName.getAuthor(),
+			BuyBookResponse buyerInfo = new BuyBookResponse(resIsbn.getName(), resIsbn.getIsbn(), resIsbn.getAuthor(),
 					resIsbn.getPrice());
 			buyerList.add(buyerInfo);
 			
@@ -709,7 +715,7 @@ public class BookServiceImpl implements BookService {
 		}
 		
 		// 實驗: 當找到複數以上的資料書籍
-		else if(!(resAuthor==null) && isBuyer == true) {
+		else if(!(resAuthor.isEmpty()) && isBuyer == true) {
 			
 			for(Book item : resAuthor) {
 				
@@ -728,12 +734,17 @@ public class BookServiceImpl implements BookService {
 		 * 賣家處理
 		 */
 			
-		else if(!(resName== null) && isBuyer == false) {
+		else if(!(resName.isEmpty()) && isBuyer == false) {
 			
-			SellBookResponse sellerInfo = new SellBookResponse(resName.getName(), resName.getIsbn(), resName.getAuthor(),
-					resName.getPrice(), resName.getSales(), resName.getStock());
-
-			sellerList.add(sellerInfo);
+			for(Book item : resName) {
+			
+			
+				SellBookResponse sellerInfo = new SellBookResponse(item.getName(), item.getIsbn(), item.getAuthor(),
+						item.getPrice(), item.getSales(), item.getStock());
+	
+				sellerList.add(sellerInfo);
+			
+			}
 			
 			// 設置銷售員的Response(List<SellBookResponse>)去接收for迴圈的list(sellerList)
 			bookResponse.setＳellBookResponse(sellerList);
@@ -759,7 +770,7 @@ public class BookServiceImpl implements BookService {
 		
 		
 		// 實驗: 當找到複數以上的資料書籍
-		else if(!(resAuthor==null) && isBuyer == false) {
+		else if(!(resAuthor.isEmpty()) && isBuyer == false) {
 			
 			for(Book item : resAuthor) {
 

@@ -6,7 +6,7 @@ import com.example.java_demo_book.entity.Book;
 
 public class BookRequest {
 	
-	// method: 新增書籍資料
+	// method: 回傳新增書籍資料用
 	private List<Book> reqBookInfo;
 	
 	// method"類別搜尋"request用

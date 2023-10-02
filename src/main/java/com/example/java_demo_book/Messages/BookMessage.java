@@ -2,7 +2,6 @@ package com.example.java_demo_book.Messages;
 
 public enum BookMessage {
 
-	// �?�?: 成功為200, 以外的數字皆為錯誤
 		SUCCESSFUL("200", "Successful!!!"), 
 		CANNOT_EMPTY("403", "Account or password is empty!!"),
 		DATALIST_ERROR("404", "DATALIST_ERROR: Can't find the Data!!"),
